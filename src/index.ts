@@ -98,6 +98,8 @@ export class Game {
   canvasEl: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
 
+  playing = true;
+
   constructor() {
     this.initCanvas();
     this.initGameState();
@@ -125,7 +127,6 @@ export class Game {
       }
     });
 
-    let playing = true;
     const gameLoop = () => {
       if (this.ai) {
         this.ai.update();
@@ -136,7 +137,7 @@ export class Game {
       // Re-render the game world
       this.render();
 
-      if (playing) {
+      if (this.playing) {
         return window.requestAnimationFrame(gameLoop);
       }
     };
@@ -386,8 +387,7 @@ export class Game {
     this.score[winner] += 1;
     if (this.score[winner] === this.score.max) {
 
-      this.score[Player.P1] = 0;
-      this.score[Player.P2] = 0;
+      this.playing = false;
 
       this.resetGameObjectPosition();
     }
